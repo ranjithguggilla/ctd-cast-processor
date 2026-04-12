@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ctd-cast-processor"
+version = "1.0.0"
+description = "Seabird CTD profile processing: Raw .cnv to CF-1.8 NetCDF with TEOS-10 derived variables, QC (loop edit, despike, bin-average), and IOOS compliance"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    {name = "Ranjith Guggilla"},
+]
+keywords = [
+    "oceanography", "CTD", "Seabird", "TEOS-10", "quality-control", "data-processing",
+    "CF-conventions", "IOOS", "FAIR", "NetCDF",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "click>=8.0",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.11",
+    "xarray>=2024.0",
+    "netcdf4>=1.6",
+    "matplotlib>=3.7",
+    "gsw>=3.6.0",
+    "pyyaml>=6.0",
+    "lxml>=4.9",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+]
+docs = [
+    "sphinx>=7.0",
+    "sphinx-rtd-theme>=1.3",
+]
+viz = [
+    "reportlab>=4.0",
+    "pypdf>=4.0",
+]
+
+[project.scripts]
+ctd-processor = "ctd_processor.cli:main"
+
+[project.urls]
+Home = "https://github.com/ranjithguggilla/ctd-cast-processor"
+Repository = "https://github.com/ranjithguggilla/ctd-cast-processor"
+
+[tool.setuptools.packages.find]
+include = ["ctd_processor*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
