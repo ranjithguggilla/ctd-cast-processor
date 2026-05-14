@@ -8,6 +8,12 @@
 
 ---
 
+![T-S Diagram](docs/images/ts_diagram.png)
+
+*T–S diagram with TEOS-10 isopycnals — four Gulf of Mexico CTD casts colored by pressure*
+
+---
+
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -216,6 +222,12 @@ viz.plot_profile(ctd, output_path="output/cast_001_profile.png")
 ---
 
 ## Step-by-Step: How the Pipeline Works
+
+> **Visual overview:** The figure below shows the raw 24 Hz scan data (left),
+> after MAD spike removal (centre), and the final 1-dbar bin-averaged output
+> (right) — all from a single 800 m cast.
+>
+> ![Pipeline Steps](docs/images/pipeline_steps.png)
 
 ### Step 1 — CNV ingestion
 
@@ -568,6 +580,10 @@ is_valid, msg = validate_salinity_range(sal, min_s=0, max_s=41)
 
 ## Quality Control Algorithms
 
+![QC Flags](docs/images/qc_flags.png)
+
+*MAD spike detection at 24 Hz resolution — orange triangles are suspicious, red × marks are flagged bad*
+
 ### Loop Edit
 
 Detects pressure reversals — a segment where the instrument briefly ascends
@@ -693,32 +709,65 @@ pressure,temperature,conductivity,...,pressure_qc,temperature_qc,...
 
 ## Visualizations
 
+All plots are generated from real pipeline output using the four synthetic
+Gulf of Mexico CTD casts in `sample_data/raw/`.
+
+---
+
 ### T-S Diagram
 
-Reveals water masses and mixing. Isopycnal contours (σ₀) overlaid in gray.
+Reveals water masses and mixing. TEOS-10 isopycnal contours (σ₀) overlaid;
+data points colored by pressure to show the depth structure of each water mass.
 
 ```python
+viz = CTDVisualizer()
 viz.plot_ts_diagram(profiles, output_path="output/ts_diagram.png")
 ```
 
-Each cast is a colored line/scatter in T-S space. The isopycnals come from
-`gsw.rho()` computed over a temperature-salinity grid at surface pressure.
+![T-S Diagram](docs/images/ts_diagram.png)
 
-### Profile Plot (3-panel)
+---
 
-Temperature, salinity, and σ₀ vs. pressure — the standard CTD deliverable.
+### Profile Comparison — All 4 Casts
+
+Four oceanographic variables plotted vs. pressure for all four Gulf of Mexico
+casts. Each colored line represents one station; shared y-axis makes
+cross-cast comparison straightforward.
+
+![Profile Comparison](docs/images/profile_comparison.png)
+
+---
+
+### Single-Cast Detail — Cast 001 (Corpus Christi Shelf, 800 m)
+
+Conservative Temperature, Absolute Salinity, σ₀, and sound speed with filled
+area shading to emphasize the vertical gradient structure.
 
 ```python
 viz.plot_profile(ctd, output_path="output/cast_001_profile.png")
 ```
 
-### Section Plot
+![Cast 001 Detail](docs/images/cast001_detail.png)
 
-Multiple casts side-by-side colored by T or σ₀. Reveals spatial gradients.
+---
 
-```python
-CTDVisualizer.plot_section(profiles, output_path="output/section.png")
-```
+### QC Flag Visualization
+
+MAD spike detection flags at full 24 Hz scan resolution.
+- **Green dots** — Good (flag 1)
+- **Orange triangles** — Suspicious / spike (flag 2)
+- **Red ×** — Bad / loop reversal (flag 3)
+
+![QC Flags](docs/images/qc_flags.png)
+
+---
+
+### Processing Pipeline — Before → After
+
+Step-by-step transformation: raw 24 Hz data → QC applied (spikes removed) →
+1-dbar bin-averaged archive-ready profile.
+
+![Pipeline Steps](docs/images/pipeline_steps.png)
 
 ---
 
