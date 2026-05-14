@@ -14,12 +14,10 @@ import json
 import logging
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any, List, Tuple
 
 import pandas as pd
 import numpy as np
 import xarray as xr
-import netCDF4 as nc
 import gsw
 
 try:
@@ -143,7 +141,7 @@ class CTDProfile:
                     pass
 
         # Parse data
-        data_lines = [l.strip() for l in lines[header_end:] if l.strip()]
+        data_lines = [line.strip() for line in lines[header_end:] if line.strip()]
         if data_lines:
             try:
                 data_array = np.array([

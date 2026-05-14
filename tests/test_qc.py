@@ -1,6 +1,5 @@
 """Tests for quality control module."""
 
-import pytest
 import numpy as np
 import pandas as pd
 
@@ -18,7 +17,7 @@ class TestSpikeDetection:
         """Test detection of obvious outlier."""
         data = pd.Series([1.0, 1.0, 1.0, 10.0, 1.0, 1.0])
         spikes = detect_spikes_mad(data, window=3, threshold=2.0)
-        assert spikes[3] == True  # Index 3 is the spike
+        assert spikes[3]  # Index 3 is the spike
 
     def test_no_false_positives_clean_data(self):
         """Test no flags on clean data."""

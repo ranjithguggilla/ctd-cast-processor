@@ -4,7 +4,6 @@ import click
 import logging
 import json
 from pathlib import Path
-from typing import List
 
 from ctd_processor import CTDProfile
 from ctd_processor.visualization import CTDVisualizer
@@ -58,7 +57,7 @@ def process(input_file: str, output: str, cruise: str, vessel: str, mad_threshol
     ctd.to_netcdf(str(nc_path))
     ctd.save_metadata(str(meta_path))
 
-    click.echo(f"✓ Processing complete:")
+    click.echo("✓ Processing complete:")
     click.echo(f"  CSV: {csv_path}")
     click.echo(f"  NetCDF: {nc_path}")
     click.echo(f"  Metadata: {meta_path}")
@@ -152,7 +151,6 @@ def plot_ts(input_dir: str, output: str):
 def check_compliance(nc_files):
     """Check IOOS compliance of NetCDF files."""
     checker = ComplianceChecker()
-    results = {}
 
     for nc_file in nc_files:
         is_compliant, details = checker.check_ioos_compliance(nc_file)

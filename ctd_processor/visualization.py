@@ -8,9 +8,7 @@ Generates:
 """
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 from matplotlib.gridspec import GridSpec
 from pathlib import Path
 import gsw
@@ -174,7 +172,6 @@ class CTDVisualizer:
         fig, axes = plt.subplots(1, 3, figsize=(16, 6), sharey=True)
 
         # Prepare section data
-        max_depth = max([p.data["pressure"].max() for p in profiles])
         x_positions = np.arange(len(profiles))
 
         for i, profile in enumerate(profiles):
@@ -183,14 +180,14 @@ class CTDVisualizer:
             d = profile.data.get("density_potential_anomaly", p * 0).values
 
             # Temperature section
-            scatter_t = axes[0].scatter(x_positions[i] * np.ones_like(p), p,
-                                       c=t, cmap='RdYlBu_r', s=50, vmin=0, vmax=30)
+            axes[0].scatter(x_positions[i] * np.ones_like(p), p,
+                            c=t, cmap='RdYlBu_r', s=50, vmin=0, vmax=30)
             axes[0].plot(x_positions[i] * np.ones_like(p), p, 'k-', alpha=0.3, linewidth=0.5)
 
             # Density section
             if d.max() > 0:
-                scatter_d = axes[2].scatter(x_positions[i] * np.ones_like(p), p,
-                                           c=d, cmap='viridis', s=50)
+                axes[2].scatter(x_positions[i] * np.ones_like(p), p,
+                                c=d, cmap='viridis', s=50)
                 axes[2].plot(x_positions[i] * np.ones_like(p), p, 'k-', alpha=0.3, linewidth=0.5)
 
         # Formatting

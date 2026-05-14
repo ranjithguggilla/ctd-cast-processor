@@ -1,6 +1,5 @@
 """Tests for core CTDProfile functionality."""
 
-import pytest
 import tempfile
 import pandas as pd
 import numpy as np
